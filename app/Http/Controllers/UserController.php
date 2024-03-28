@@ -21,7 +21,7 @@ class UserController extends Controller
     public function createUser(Request $request)
     {
         try {
-            //Validated
+
             $validateUser = Validator::make(
                 $request->all(),
                 [
@@ -103,12 +103,29 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+
+    public function Logout()
+    {
+        Auth::logout();
+        return $this->success([
+            'message' => 'You have been logged out successfully'
+        ]);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+
+        $user = User::all();
+
+
+        $data = [
+            'status' => 200,
+            'progress' => $user
+        ];
+        return response()->json($data, 200);
     }
 
     /**
