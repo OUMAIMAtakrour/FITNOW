@@ -13,17 +13,19 @@ return new class extends Migration
     {
         Schema::create('progress', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('measurments');
-            $table->boolean('status')->default('false');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->decimal('weight', 5, 2)->nullable();
+            $table->decimal('waist')->nullable();
+            $table->decimal('Abs')->nullable();
+            $table->json('measurements')->nullable();
+            $table->json('performance')->nullable();
+            $table->string('status')->default('incomplete');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('progress');
     }

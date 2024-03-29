@@ -18,9 +18,13 @@ class ProgressFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'=>fake()->sentence(),
-            'measurments'=>fake()->sentence(),
-            'status'=>rand(0,1)
+            
+           'user_id'=>1,
+            'weight'=>fake()->numerify(),
+            'waist'=>fake()->numerify(),
+            'Abs'=>fake()->numerify(),
+           
+         
         ];
     }
 }

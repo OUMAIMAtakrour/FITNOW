@@ -39,9 +39,14 @@ class ProgressController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => 'required',
-                'status' => 'required',
-                'measurments' => 'required',
+                'user_id' => 'required',
+                'weight' => 'required',
+                'waist' => 'required',
+                'Abs' => 'required',
+                'measurements' => 'required',
+                'performance'=>'required',
+                'status'=>'required',
+       
 
             ]
         );
@@ -53,9 +58,12 @@ class ProgressController extends Controller
             return response()->json($data, 422);
         } else {
             $progress = new Progress;
-            $progress->name = $request->name;
+            $progress->user_id = $request->user_id;
+            $progress->weight = $request->weight;
+            $progress->Abs = $request->Abs;
+            $progress->measurements = $request->measurements;
+            $progress->performance = $request->performance;
             $progress->status = $request->status;
-            $progress->measurments = $request->measurments;
             $progress->save();
 
             $data = [
@@ -83,9 +91,12 @@ class ProgressController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => 'required',
-                'status' => 'required',
-                'measurments' => 'required',
+              
+                'weight' => 'required',
+                'waist' => 'required',
+                'Abs' => 'required',
+        
+                'status'=>'required',
 
             ]
         );
@@ -99,9 +110,13 @@ class ProgressController extends Controller
 
             $progress = Progress::find($id);
 
-            $progress->name = $request->name;
+            $progress = new Progress;
+          
+            $progress->weight = $request->weight;
+            $progress->Abs = $request->Abs;
+            $progress->measurements = $request->measurements;
+            $progress->performance = $request->performance;
             $progress->status = $request->status;
-            $progress->measurments = $request->measurments;
             $progress->save();
 
             $data = [
