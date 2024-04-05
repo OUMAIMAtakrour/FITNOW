@@ -12,9 +12,7 @@ class Progress extends Model
         'user_id',
         'weight',
         'waist',
-        'Abs',
-        'measurements',
-        'performance',
+        'abs',
         'status',
     ];
 

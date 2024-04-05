@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Progress;
-
+use App\Models\User;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-
-
+use App\Http\Requests\StoreProgressRequest;
+use App\Http\Requests\UpdateProgressRequest;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\ProgressResource;
-use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpFoundation\Request;
+use App\Http\Resources\ProgressCollection;
 
 class ProgressController extends Controller
 {
@@ -19,126 +19,38 @@ class ProgressController extends Controller
      */
     public function index()
     {
-
-        $progress = Progress::all();
-
-
-        $data = [
-            'status' => 200,
-            'progress' => $progress
-        ];
-        return response()->json($data, 200);
+        return new ProgressCollection(Progress::where('user_id', Auth::id())->get());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreProgressRequest $request)
     {
+        $validated = $request->validated();
 
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'user_id' => 'required',
-                'weight' => 'required',
-                'waist' => 'required',
-                'Abs' => 'required',
-                'measurements' => 'required',
-                'performance'=>'required',
-                'status'=>'required',
-       
+        $progress = Auth::user()->Progress()->create($validated);
 
-            ]
-        );
-        if ($validator->fails()) {
-            $data = [
-                'status' => 422,
-                "message" => $validator->messages()
-            ];
-            return response()->json($data, 422);
-        } else {
-            $progress = new Progress;
-            $progress->user_id = $request->user_id;
-            $progress->weight = $request->weight;
-            $progress->Abs = $request->Abs;
-            $progress->measurements = $request->measurements;
-            $progress->performance = $request->performance;
-            $progress->status = $request->status;
-            $progress->save();
-
-            $data = [
-                'status' => 200,
-                "message" => 'Data uploaded'
-            ];
-            return response()->json($data, 200);
-        }
+        return new ProgressResource($progress);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Progress $progress)
+    public function show(Request $request, Progress $progress)
     {
-        return ProgressResource::make($progress);
+        return new ProgressResource($progress);
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
+    public function update(UpdateProgressRequest $request, Progress $progress)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-              
-                'weight' => 'required',
-                'waist' => 'required',
-                'Abs' => 'required',
-        
-                'status'=>'required',
+        $validated = $request->validated();
 
-            ]
-        );
-        if ($validator->fails()) {
-            $data = [
-                'status' => 422,
-                "message" => $validator->messages()
-            ];
-            return response()->json($data, 422);
-        } else {
+        $progress->update($validated);
 
-            $progress = Progress::find($id);
-
-            $progress = new Progress;
-          
-            $progress->weight = $request->weight;
-            $progress->Abs = $request->Abs;
-            $progress->measurements = $request->measurements;
-            $progress->performance = $request->performance;
-            $progress->status = $request->status;
-            $progress->save();
-
-            $data = [
-                'status' => 200,
-                "message" => 'Data updated successfully'
-            ];
-            return response()->json($data, 200);
-        }
+        return new ProgressResource($progress);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, Progress $progress)
     {
-        $progres=Progress::find($id);
-        $progres->delete();
-        $data=
-        [
-            'status'=>200,
-            'message'=>"data deleted successfully"
-        ];
-        return response()->json($data,200);
+        $progress->delete();
+        return response()->noContent(204);
     }
 }

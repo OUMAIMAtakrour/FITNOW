@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->decimal('weight', 5, 2)->nullable();
+            $table->decimal('weight')->nullable();
             $table->decimal('waist')->nullable();
-            $table->decimal('Abs')->nullable();
-            $table->json('measurements')->nullable();
-            $table->json('performance')->nullable();
+            $table->decimal('abs')->nullable();
+           
+            
             $table->string('status')->default('incomplete');
             $table->timestamps();
         });

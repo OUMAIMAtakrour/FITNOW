@@ -19,10 +19,10 @@ class ProgressFactory extends Factory
     {
         return [
             
-           'user_id'=>1,
+           'user_id'=>4,
             'weight'=>fake()->numerify(),
             'waist'=>fake()->numerify(),
-            'Abs'=>fake()->numerify(),
+            'abs'=>fake()->numerify(),
            
          
         ];

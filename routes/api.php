@@ -22,14 +22,16 @@ use App\Http\Controllers\ProgressController;
 |
 */
 
-Route::prefix('V1')->group(function () {
-    Route::apiResource('/progress', ProgressController::class);
-});
-Route::post('/auth/register', [UserController::class, 'createUser']);
-Route::post('/auth/login', [UserController::class, 'loginUser']);
-Route::get('/auth/user', [UserController::class, 'index']);
-Route::post('/auth/logout', [UserController::class, 'logout']);
+Route::post('login',[UserController::class, 'login']);
+
+Route::post('register',[UserController::class, 'register']);
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:sanctum')->group(function(){
+
+    Route::apiResource('progress',ProgressController::class);
+});
